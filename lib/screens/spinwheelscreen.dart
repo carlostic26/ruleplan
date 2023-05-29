@@ -168,241 +168,341 @@ class _SpinWheelState extends State<SpinWheel> {
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 188, 19, 64),
-      body: Column(children: [
-        //flecha atras
-        Align(
-          alignment: Alignment.topLeft,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(0, 20, 5, 1),
-            child: IconButton(
-              icon: const Icon(Icons.arrow_back, size: 30, color: Colors.amber),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (context) => const optionsPlanesScreen()),
-                );
-              },
-            ),
-          ),
-        ),
-        Column(
+      body: SingleChildScrollView(
+        child: Column(
           children: [
-            const SizedBox(
-              height: 15,
-            ),
-            const Text(
-              "RulePlan",
-              style: TextStyle(
-                  fontSize: 70, fontFamily: 'LobsterTwo', color: Colors.white),
-            ),
             Align(
-              alignment: Alignment.center,
-              child: Text(
-                widget.requiredPlan,
-                style: const TextStyle(
-                  fontSize: 30,
-                  fontFamily: 'LobsterTwo',
-                  color: Colors.amber,
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            SizedBox(
-              height: 300,
-              child: Container(
-                decoration: BoxDecoration(
-                  //establece el color del borde de la ruleta
-                  border: Border.all(color: Colors.black, width: 5),
-                  shape: BoxShape.circle,
-                ),
-                child: FortuneWheel(
-                  styleStrategy: const UniformStyleStrategy(
-                    borderColor: Colors.yellow,
-                    color: Colors.yellow,
-                    borderWidth: 4,
-                  ),
-                  selected: selected.stream,
-                  animateFirst: false,
-                  items: [
-                    for (int i = 0; i < itemsPlan.length; i++) ...<FortuneItem>{
-                      FortuneItem(
-                        child: Stack(
-                          children: <Widget>[
-                            Container(
-                              decoration: BoxDecoration(
-                                color:
-                                    i % 2 == 0 ? Colors.orange : Colors.yellow,
-                              ),
-                            ),
-                            Center(
-                              child: Text(
-                                itemsPlan[i],
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    },
-                  ],
-                  onAnimationEnd: () {
-                    setState(() {
-                      plan = itemsPlan[selected.value];
-                    });
-                    showItemDialog(plan);
-                    print(plan);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text("El plan de hoy será $plan ¡Adelante!"),
-                      ),
-
-                      //dialog
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 20, 5, 1),
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back,
+                      size: 30, color: Colors.amber),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => const optionsPlanesScreen()),
                     );
                   },
                 ),
               ),
             ),
-            const SizedBox(height: 20),
-            Align(
-              alignment: Alignment.center,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Elije tus intereses',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontFamily: 'LobsterTwo',
-                          color: Colors.white,
-                        ),
+            Column(
+              children: [
+                const SizedBox(height: 15),
+                const Text(
+                  "RulePlan",
+                  style: TextStyle(
+                    fontSize: 70,
+                    fontFamily: 'LobsterTwo',
+                    color: Colors.white,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    widget.requiredPlan,
+                    style: const TextStyle(
+                      fontSize: 30,
+                      fontFamily: 'LobsterTwo',
+                      color: Colors.amber,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  height: 300,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black, width: 5),
+                      shape: BoxShape.circle,
+                    ),
+                    child: FortuneWheel(
+                      styleStrategy: const UniformStyleStrategy(
+                        borderColor: Colors.yellow,
+                        color: Colors.yellow,
+                        borderWidth: 4,
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-                      child: SizedBox(width: drawer_width * 0.40),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        // aquí agrega el código que quieres ejecutar al tocar el botón
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SpinWheel(
-                                    requiredPlan: widget.requiredPlan,
-                                  )),
+                      selected: selected.stream,
+                      animateFirst: false,
+                      items: [
+                        for (int i = 0;
+                            i < itemsPlan.length;
+                            i++) ...<FortuneItem>{
+                          FortuneItem(
+                            child: Stack(
+                              children: <Widget>[
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: i % 2 == 0
+                                        ? Colors.orange
+                                        : Colors.yellow,
+                                  ),
+                                ),
+                                Center(
+                                  child: Text(
+                                    itemsPlan[i],
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        },
+                      ],
+                      onAnimationEnd: () {
+                        setState(() {
+                          plan = itemsPlan[selected.value];
+                        });
+                        showItemDialog(plan);
+                        print(plan);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content:
+                                Text("El plan de hoy será $plan ¡Adelante!"),
+                          ),
                         );
                       },
-                      child: const CircleAvatar(
-                        backgroundColor: Colors.amber,
-                        radius: 12,
-                        child: Icon(
-                          Icons.refresh,
-                          color: Colors.black,
-                        ),
-                      ),
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.8,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
-                child: Wrap(
-                  spacing: 8,
-                  runSpacing: 7,
-                  children: [
-                    for (int i = 0; i < itemsPlan.length; i++)
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            if (selectedIndices.contains(i)) {
-                              //agrega la pos del item a la lista
-                              selectedIndices.add(i);
-                              _prefs?.setString("boton_$i", itemsPlan[i]);
-                            } else {
-                              if (itemsPlan.length <= 2) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                        "Debes tener al menos 2 items en este plan"),
-                                  ),
-                                );
-                              } else {
-                                selectedIndices.remove(i);
-                                itemsPlan.remove(itemsPlan[i]);
-                                _prefs?.remove("boton_$i");
-                              }
-                            }
-                          });
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: selectedIndices.contains(i)
-                                ? Colors.grey
-                                : Colors.amber,
-                            borderRadius: BorderRadius.circular(10),
+                const SizedBox(height: 20),
+                Align(
+                  alignment: Alignment.center,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Elije tus intereses',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontFamily: 'LobsterTwo',
+                              color: Colors.white,
+                            ),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: Text(
-                              '${itemsPlan[i]} x',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                          child: SizedBox(width: drawer_width * 0.20),
+                        ),
+                        //boton agregar
+                        GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                String newPlanName = '';
+                                return AlertDialog(
+                                  title: const Text('Agregar Plan'),
+                                  content: TextField(
+                                    onChanged: (value) {
+                                      newPlanName = value;
+                                    },
+                                    decoration: const InputDecoration(
+                                      hintText: 'Nombre del plan',
+                                    ),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(
+                                            context); // Cierra el diálogo
+                                        // Aquí puedes hacer algo con el nuevo nombre del plan
+                                        // Por ejemplo, agregarlo a una lista de planes
+                                        // y luego realizar la navegación a la siguiente pantalla
+                                        // con los planes actualizados
+                                        // Ejemplo:
+                                        setState(() {
+                                          itemsPlan.add(newPlanName);
+                                        });
+                                        /*  Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => SpinWheel(
+                                              requiredPlan: widget.requiredPlan,
+                                            ),
+                                          ),
+                                        ); */
+                                      },
+                                      child: const Text('Agregar'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          child: const CircleAvatar(
+                            backgroundColor: Colors.amber,
+                            radius: 12,
+                            child: Icon(
+                              Icons.add,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+
+                        SizedBox(width: 10),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SpinWheel(
+                                    requiredPlan: widget.requiredPlan,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: const CircleAvatar(
+                              backgroundColor: Colors.amber,
+                              radius: 12,
+                              child: Icon(
+                                Icons.refresh,
+                                color: Colors.black,
                               ),
                             ),
                           ),
                         ),
-                      ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  //gira la ruleta y cae en una franja a
-                  selected.add(Fortune.randomInt(0, itemsPlan.length));
-                });
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.amber,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                height: 40,
-                width: 120,
-                child: const Center(
-                  child: Text(
-                    "Girar",
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontFamily: 'LobsterTwo',
-                        color: Colors.black),
+                      ],
+                    ),
                   ),
                 ),
-              ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
+                    child: Wrap(
+                      spacing: 8,
+                      runSpacing: 7,
+                      children: [
+                        for (int i = 0; i < itemsPlan.length; i++)
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                if (selectedIndices.contains(i)) {
+                                  selectedIndices.add(i);
+                                  _prefs?.setString("boton_$i", itemsPlan[i]);
+                                } else {
+                                  if (itemsPlan.length <= 2) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            "Debes tener al menos 2 items en este plan"),
+                                      ),
+                                    );
+                                  } else {
+                                    selectedIndices.remove(i);
+                                    itemsPlan.remove(itemsPlan[i]);
+                                    _prefs?.remove("boton_$i");
+                                  }
+                                }
+                              });
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: selectedIndices.contains(i)
+                                    ? Colors.grey
+                                    : Colors.amber,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Stack(
+                                children: [
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(4, 4, 20, 4),
+                                    child: Text(
+                                      itemsPlan[i],
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: 5,
+                                    right: 2,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        // Acción al tocar el botón de eliminar
+                                        setState(() {
+                                          if (itemsPlan.length <= 2) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                    "Debes tener al menos 2 items en este plan"),
+                                              ),
+                                            );
+                                          } else {
+                                            selectedIndices.remove(i);
+                                            itemsPlan.remove(itemsPlan[i]);
+                                            _prefs?.remove("boton_$i");
+                                          }
+                                        });
+                                      },
+                                      child: Container(
+                                        decoration: const BoxDecoration(
+                                          color: Colors.red,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: const Icon(
+                                          size: 15,
+                                          Icons.close,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 30),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selected.add(Fortune.randomInt(0, itemsPlan.length));
+                    });
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.amber,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    height: 40,
+                    width: 120,
+                    child: const Center(
+                      child: Text(
+                        "Girar",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontFamily: 'LobsterTwo',
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 30),
+              ],
             ),
           ],
         ),
-      ]),
+      ),
     );
   }
 
