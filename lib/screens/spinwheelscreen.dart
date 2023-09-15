@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'checkBox.dart';
 import 'package:location/location.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class SpinWheel extends StatefulWidget {
   final String requiredPlan;
@@ -21,6 +22,34 @@ class SpinWheel extends StatefulWidget {
 SharedPreferences? _prefs;
 
 class _SpinWheelState extends State<SpinWheel> {
+  //ads
+  late BannerAd staticAd;
+  bool staticAdLoaded = false;
+
+  static const AdRequest request = AdRequest(
+      //keywords: ['',''],
+      //contentUrl: '',
+      //nonPersonalizedAds: false
+      );
+
+  void loadStaticBannerAd() {
+    staticAd = BannerAd(
+        adUnitId: //test: ca-app-pub-4336409771912215/8304641094  ||  real: ca-app-pub-4336409771912215/3289767221
+            'ca-app-pub-4336409771912215/3289767221',
+        size: AdSize.banner,
+        request: request,
+        listener: BannerAdListener(onAdLoaded: (ad) {
+          setState(() {
+            staticAdLoaded = true;
+          });
+        }, onAdFailedToLoad: (ad, error) {
+          ad.dispose();
+          print('ad failed to load ${error.message}');
+        }));
+
+    staticAd.load();
+  }
+
   final selected = BehaviorSubject<int>();
   String plan = '100';
 
@@ -32,6 +61,8 @@ class _SpinWheelState extends State<SpinWheel> {
 
   @override
   void initState() {
+    //load ads
+    loadStaticBannerAd();
     _isSelected = List.filled(8, false);
     SharedPreferences.getInstance().then((prefs) {
       _prefs = prefs;
@@ -501,6 +532,25 @@ class _SpinWheelState extends State<SpinWheel> {
               ],
             ),
           ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        height: 65,
+        child: Center(
+          child: Column(
+            children: [
+              Container(
+                //load de ad and give size
+                width: staticAd.size.width.toDouble(),
+                height: staticAd.size.height.toDouble(),
+                alignment: Alignment.bottomCenter,
+                //load de ad and give size
+                child: AdWidget(
+                  ad: staticAd,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -11,12 +11,23 @@ class percentIndicator extends StatefulWidget {
 
 // ignore: camel_case_types
 class _percentIndicatorState extends State<percentIndicator> {
+  bool _isFirstBuild = true;
+  bool? contadorFinalizado = false;
+  bool isButtonVisible =
+      false; // Nuevo estado para controlar la visibilidad del botón
+  bool _buttonEnabled = false;
+
   @override
   // ignore: must_call_super
   void initState() {
     //despues de 5 segundos se cambia de pantalla
-    Future.delayed(const Duration(seconds: 7), () {
-      isLoaded();
+    Future.delayed(const Duration(seconds: 9), () {
+      _isFirstBuild =
+          false; // Establecer en false después de la primera construcción
+
+      setState(() {
+        _buttonEnabled = true;
+      });
     });
   }
 
@@ -46,51 +57,46 @@ class _percentIndicatorState extends State<percentIndicator> {
                 children: [
                   LinearPercentIndicator(
                     width: 250.0,
-                    lineHeight: 15,
+                    lineHeight: 18,
                     percent: 100 / 100,
                     animation: true,
                     animationDuration: 7500, //8.5 sec to load bar
-                    leading: const Text(
-                      "",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    trailing: const Text(
-                      "",
-                      style: TextStyle(
-                          fontSize: 20, color: Colors.deepOrangeAccent),
-                    ),
                     progressColor: Colors.amber,
+                    center: const Text("Cargando ...",
+                        style: TextStyle(fontSize: 12, color: Colors.black)),
                   ),
                 ],
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text("Cargando ",
+            const SizedBox(
+              height: 50,
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 50, 0, 50),
+                child: TextButton(
+                  onPressed: _buttonEnabled
+                      ? () async {
+                          isLoaded();
+                        }
+                      : null, // Desactiva el botón si no está habilitado
+                  style: ButtonStyle(
+                    backgroundColor: _buttonEnabled
+                        ? MaterialStateProperty.all<Color>(Colors
+                            .orange) // Color de fondo cuando está habilitado
+                        : MaterialStateProperty.all<Color>(Colors
+                            .grey), // Color de fondo cuando está deshabilitado
+                  ),
+
+                  child: Text(
+                    'Continuar',
                     style: TextStyle(
                         fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white)),
-                McCountingText(
-                  begin: 0,
-                  end: 6,
-                  precision: 0,
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                  duration: Duration(
-                      seconds:
-                          7), //7 second to count numbers from 0 to n courses
-                  curve: Curves.fastOutSlowIn,
+                        color: _buttonEnabled ? Colors.white : Colors.blueGrey),
+                  ),
                 ),
-                Text(" planes para elegir",
-                    style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white)),
-              ],
+              ),
             ),
           ],
         ),

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:ruleparejas_project/screens/spinwheelscreen.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class optionsPlanesScreen extends StatefulWidget {
   const optionsPlanesScreen({super.key});
@@ -17,6 +19,18 @@ class _optionsPlanesScreenState extends State<optionsPlanesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent, // Color de fondo transparente
+        elevation: 0, // Sin sombra
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.info),
+            onPressed: () {
+              showAppInfo(context);
+            },
+          ),
+        ],
+      ),
       backgroundColor: const Color.fromARGB(255, 188, 19, 64),
       body: Stack(
         children: [
@@ -384,6 +398,79 @@ class _optionsPlanesScreenState extends State<optionsPlanesScreen> {
     );
   }
 }
+
+void shareApp() {
+  Share.share(
+      "¡RulePlan es una app para elegir aleatoriamente cualquier plan entre amigos!"
+      "\n\nDescargar app: https://play.google.com/store/apps/details?id=com.blogspot.ruleplan");
+}
+
+void showAppInfo(BuildContext context) {
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          backgroundColor: Colors.white,
+          title: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Text(
+                  "Información",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18.0,
+                  ),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                ElevatedButton(
+                    style: const ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll<Color>(
+                        Colors.pink,
+                      ),
+                    ),
+                    child: const Text(
+                      'Política de privacidad',
+                      style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.white,
+                          fontFamily: 'Silkscreen'),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      launch(
+                          'https://ticnoticos.blogspot.com/2023/05/politica-de-privacidad-de-ruleplan.html');
+                    }),
+                const SizedBox(
+                  height: 5,
+                ),
+                ElevatedButton(
+                    style: const ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll<Color>(
+                        Colors.pink,
+                      ),
+                    ),
+                    child: const Text(
+                      'Compartir app',
+                      style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.white,
+                          fontFamily: 'Silkscreen'),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      shareApp();
+                    }),
+                const SizedBox(
+                  height: 30,
+                ),
+              ]),
+        );
+      });
+}
+
 
 
 /* PARA GAMICOLPANER SERVIRÁ SOLO LOS 6 CARDS ESTATICOS
