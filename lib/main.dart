@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:ruleparejas_project/screens/multitouch.dart';
 import 'package:ruleparejas_project/screens/percent_indicator.dart';
@@ -28,8 +29,11 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
 
+  SystemChrome.setEnabledSystemUIOverlays([]); // Esconde la barra de estado
+
   await MobileAds.instance.initialize();
-  //await loadAd();
+  await loadAd();
+
   Timer(const Duration(seconds: 9), () async {
     if (isAdLoaded == false) {
       openAd?.dispose();
@@ -58,7 +62,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MultiTouchScreen(), //const SpinWheel(),
+      home: percentIndicator(), //const SpinWheel(),
     );
   }
 }
