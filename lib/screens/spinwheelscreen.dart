@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
+import 'package:ruleparejas_project/ads/ads.dart';
 import 'package:ruleparejas_project/screens/options.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:giff_dialog/giff_dialog.dart';
@@ -32,10 +35,11 @@ class _SpinWheelState extends State<SpinWheel> {
       //nonPersonalizedAds: false
       );
 
+  RuleAdsIds ads = RuleAdsIds();
+
   void loadStaticBannerAd() {
     staticAd = BannerAd(
-        adUnitId: //test: ca-app-pub-4336409771912215/8304641094  ||  real: ca-app-pub-4336409771912215/3289767221
-            'ca-app-pub-4336409771912215/3289767221',
+        adUnitId: ads.banner_adUnitId,
         size: AdSize.banner,
         request: request,
         listener: BannerAdListener(onAdLoaded: (ad) {
