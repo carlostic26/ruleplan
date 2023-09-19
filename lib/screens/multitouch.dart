@@ -153,7 +153,7 @@ class TouchPainter extends CustomPainter {
             Colors.amber // usar el color asociado al toque o rojo por defecto
         ..style = PaintingStyle.fill;
 
-      canvas.drawCircle(offset, 40.0, paint);
+      canvas.drawCircle(offset, 70.0, paint);
     });
   }
 
